@@ -1,4 +1,9 @@
 import React from "react";
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import a from "./abc.jpeg"
+// Register Chart.js components
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = () => {
   // Inline styles
@@ -27,43 +32,11 @@ const Dashboard = () => {
       borderRadius: "8px",
       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
     },
-    tableContainer: {
-      flex: "1",
-      margin: "10px",
-      backgroundColor: "#fff",
-      borderRadius: "8px",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-      padding: "20px",
-    },
-    table: {
+    img: {
       width: "100%",
-      borderCollapse: "collapse",
-    },
-    th: {
-      backgroundColor: "#333",
-      color: "#fff",
-      textAlign: "left",
-      padding: "10px",
-    },
-    td: {
-      padding: "10px",
-      borderBottom: "1px solid #ddd",
-    },
-    placeholder: {
-      width: "100%",
-      height: "150px",
-      backgroundColor: "#e0e0e0",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+      height: "550px",
+      objectFit: "cover",
       borderRadius: "8px",
-    },
-    engagementCard: {
-      textAlign: "center",
-      padding: "20px",
-      backgroundColor: "#fff",
-      borderRadius: "8px",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
     },
   };
 
@@ -86,6 +59,18 @@ const Dashboard = () => {
     shares: 300,
   };
 
+  // Data for pie chart
+  const pieData = {
+    labels: ["Happy", "Sad", "Neutral"],
+    datasets: [
+      {
+        data: [50, 30, 20], // Replace with dynamic values if needed
+        backgroundColor: ["#4caf50", "#f44336", "#ffc107"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Sentiment Analysis Dashboard</h1>
@@ -94,7 +79,11 @@ const Dashboard = () => {
       <div style={styles.row}>
         <div style={styles.card}>
           <h3>Post from Platform (Image/Video)</h3>
-          <div style={styles.placeholder}>Content Placeholder</div>
+          <img
+            src={a} // Replace this URL with your image's actual URL
+            alt="Platform Content"
+            style={styles.img}
+          />
         </div>
         <div style={styles.card}>
           <h3>Analysis of Image</h3>
@@ -102,10 +91,14 @@ const Dashboard = () => {
           <p>Sad: 30%</p>
           <p>Neutral: 20%</p>
         </div>
+        <div style={styles.card}>
+          <h3>Sentiment Distribution</h3>
+          <Pie data={pieData} />
+        </div>
       </div>
 
       {/* Engagement Metrics */}
-      <div style={styles.engagementCard}>
+      <div style={styles.card}>
         <h3>Engagement Metrics</h3>
         <p>Likes: {engagementMetrics.likes}</p>
         <p>Comments: {engagementMetrics.comments}</p>
@@ -114,48 +107,63 @@ const Dashboard = () => {
 
       {/* Row 3 */}
       <div style={styles.row}>
-        <div style={styles.tableContainer}>
+        <div style={styles.card}>
           <h3>Performance Metrics</h3>
-          <table style={styles.table}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr>
-                <th style={styles.th}>Metric</th>
-                <th style={styles.th}>Visual Pipeline</th>
-                <th style={styles.th}>Text Pipeline</th>
-                <th style={styles.th}>Combined Output</th>
+                <th style={{ backgroundColor: "#333", color: "#fff", padding: "10px", textAlign: "left" }}>
+                  Metric
+                </th>
+                <th style={{ backgroundColor: "#333", color: "#fff", padding: "10px", textAlign: "left" }}>
+                  Visual Pipeline
+                </th>
+                <th style={{ backgroundColor: "#333", color: "#fff", padding: "10px", textAlign: "left" }}>
+                  Text Pipeline
+                </th>
+                <th style={{ backgroundColor: "#333", color: "#fff", padding: "10px", textAlign: "left" }}>
+                  Combined Output
+                </th>
               </tr>
             </thead>
             <tbody>
               {performanceMetrics.map((row, index) => (
                 <tr key={index}>
-                  <td style={styles.td}>{row.metric}</td>
-                  <td style={styles.td}>{row.visual}</td>
-                  <td style={styles.td}>{row.text}</td>
-                  <td style={styles.td}>{row.combined}</td>
+                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{row.metric}</td>
+                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{row.visual}</td>
+                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{row.text}</td>
+                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{row.combined}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
-        <div style={styles.tableContainer}>
+        <div style={styles.card}>
           <h3>Platform Analysis</h3>
-          <table style={styles.table}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr>
-                <th style={styles.th}>Platform</th>
-                <th style={styles.th}>Positive (%)</th>
-                <th style={styles.th}>Neutral (%)</th>
-                <th style={styles.th}>Negative (%)</th>
+                <th style={{ backgroundColor: "#333", color: "#fff", padding: "10px", textAlign: "left" }}>
+                  Platform
+                </th>
+                <th style={{ backgroundColor: "#333", color: "#fff", padding: "10px", textAlign: "left" }}>
+                  Positive (%)
+                </th>
+                <th style={{ backgroundColor: "#333", color: "#fff", padding: "10px", textAlign: "left" }}>
+                  Neutral (%)
+                </th>
+                <th style={{ backgroundColor: "#333", color: "#fff", padding: "10px", textAlign: "left" }}>
+                  Negative (%)
+                </th>
               </tr>
             </thead>
             <tbody>
               {platformAnalysis.map((row, index) => (
                 <tr key={index}>
-                  <td style={styles.td}>{row.platform}</td>
-                  <td style={styles.td}>{row.positive}</td>
-                  <td style={styles.td}>{row.neutral}</td>
-                  <td style={styles.td}>{row.negative}</td>
+                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{row.platform}</td>
+                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{row.positive}</td>
+                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{row.neutral}</td>
+                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{row.negative}</td>
                 </tr>
               ))}
             </tbody>
